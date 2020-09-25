@@ -1,6 +1,39 @@
 .card {
   background-color: chocolate;
-  width: 280px;
-  height: 280px;
   border-radius: 20px;
+  padding: 1em 1.2em;
+  position: relative;
+}
+
+.cards {
+  display: inline-flex;
+}
+
+.title {
+  font-size: 1.2em;
+  line-height: 1.2em;
+  font-weight: 500;
+}
+
+.date {
+  margin-top: 2.5em;
+  color: white;
+  font-weight: 500;
+}
+
+.edit {
+  background: black;
+  border-radius: 50%;
+  padding: 0.6em;
+  display: -moz-box;
+  display: flex;
+  position: absolute;
+  /* width: 50px; */
+  right: 10px;
+  /* height: 50px; */
+  bottom: 10px;
+}
+
+.edit svg {
+  color: white;
 }
