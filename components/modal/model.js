@@ -30,6 +30,12 @@ export default function ModalComponent(props) {
     console.log(e.target.value);
   };
 
+  const deleteNote = async () => {
+    const todoRef = firebase.database().ref("Todo").child(props.id);
+    await todoRef.remove();
+    toggle();
+  };
+
   const submitNote = async (type) => {
     console.log("submit", type);
     if (type === "create") {
@@ -111,7 +117,7 @@ export default function ModalComponent(props) {
             Submit
           </Button>
           {props.type == "edit" ? (
-            <Button color="danger" onClick={toggle}>
+            <Button color="danger" onClick={deleteNote}>
               Delete
             </Button>
           ) : (
