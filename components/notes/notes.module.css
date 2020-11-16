@@ -24,16 +24,20 @@
 }
 
 .edit {
-  background: black;
-  border-radius: 50%;
-  padding: 0.6em;
-  display: -moz-box;
   display: flex;
   position: absolute;
-  /* width: 50px; */
   right: 10px;
-  /* height: 50px; */
   bottom: 10px;
+}
+
+.edit div {
+  background-color: black;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .edit svg {
