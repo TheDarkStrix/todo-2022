@@ -4,8 +4,22 @@ import firebase from "../../utils/firebase";
 import style from "./notes.module.css";
 
 export default function Notes() {
-  const [todoList, setTodoList] = useState();
+  const [todoList, setTodoList] = useState([]);
 
+  let colors = [
+    "#F44336",
+    "#FF5722",
+    "#8BC34A",
+    "#CDDC39",
+    "#536DFE",
+    "#FFC107",
+    "#9C27B0",
+    "#4CAF50",
+  ];
+
+  function randomColor() {
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
   //console.log(todoList.length);
 
   useEffect(() => {
@@ -41,7 +55,10 @@ export default function Notes() {
               <div className="row" style={{ width: "100%" }}>
                 {todoList.map((data, i) => (
                   <div className="col-md-4" key={i}>
-                    <div className={style.card}>
+                    <div
+                      className={style.card}
+                      style={{ backgroundColor: randomColor() }}
+                    >
                       <div className={style.title}>{data.notes}</div>
                       <div className={style.date}>{data.date}</div>
                       <div className={style.edit}>
