@@ -16,11 +16,17 @@ export default function ModalComponent(props) {
   const [modal, setModal] = useState(false);
 
   const [notes, setNotes] = useState("");
+  const [notesValue, setNotesValue] = useState(props.content);
 
   const toggle = () => setModal(!modal);
 
   const handleOnChange = (e) => {
     setNotes(e.target.value);
+    console.log(e.target.value);
+  };
+
+  const handleOnChangeEvent = (e) => {
+    setNotesValue(e.target.value);
     console.log(e.target.value);
   };
 
@@ -33,6 +39,12 @@ export default function ModalComponent(props) {
         date: "May 20,2020",
       };
       await todoRef.push(note);
+      toggle();
+    } else if (type === "edit") {
+      const todoRef = firebase.database().ref("Todo").child(props.id);
+      await todoRef.update({
+        notes: notesValue,
+      });
       toggle();
     }
   };
@@ -89,7 +101,8 @@ export default function ModalComponent(props) {
               type="textarea"
               name="text"
               id="exampleText"
-              onChange={handleOnChange}
+              onChange={handleOnChangeEvent}
+              value={notesValue}
             />
           </FormGroup>
         </ModalBody>

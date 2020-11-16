@@ -43,7 +43,11 @@ export default function Notes() {
                     <div className={style.title}>{data.notes}</div>
                     <div className={style.date}>{data.date}</div>
                     <div className={style.edit}>
-                      <ModalComponent type="edit" />
+                      <ModalComponent
+                        type="edit"
+                        content={data.notes}
+                        id={data.id}
+                      />
                     </div>
                     <div className={style.star}></div>
                   </div>
