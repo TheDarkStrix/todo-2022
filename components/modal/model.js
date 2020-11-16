@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import firebase from "../../utils/firebase";
 import {
   Button,
   Modal,
@@ -12,10 +13,29 @@ import {
 
 export default function ModalComponent(props) {
   const { buttonLabel, className } = props;
-
   const [modal, setModal] = useState(false);
 
+  const [notes, setNotes] = useState("");
+
   const toggle = () => setModal(!modal);
+
+  const handleOnChange = (e) => {
+    setNotes(e.target.value);
+    console.log(e.target.value);
+  };
+
+  const submitNote = async (type) => {
+    console.log("submit", type);
+    if (type === "create") {
+      const todoRef = firebase.database().ref("Todo");
+      const note = {
+        notes,
+        date: "May 20,2020",
+      };
+      await todoRef.push(note);
+      toggle();
+    }
+  };
 
   return (
     <div>
@@ -65,11 +85,16 @@ export default function ModalComponent(props) {
             <Label for="exampleText">
               {props.type == "create" ? "Enter Note" : "Edit Note"}
             </Label>
-            <Input type="textarea" name="text" id="exampleText" />
+            <Input
+              type="textarea"
+              name="text"
+              id="exampleText"
+              onChange={handleOnChange}
+            />
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={toggle}>
+          <Button color="primary" onClick={() => submitNote(props.type)}>
             Submit
           </Button>
           {props.type == "edit" ? (
