@@ -4,7 +4,9 @@ import firebase from "../../utils/firebase";
 import style from "./notes.module.css";
 
 export default function Notes() {
-  const [todoList, setTodoList] = useState([]);
+  const [todoList, setTodoList] = useState();
+
+  //console.log(todoList.length);
 
   useEffect(() => {
     const todoRef = firebase.database().ref("Todo");
@@ -35,24 +37,25 @@ export default function Notes() {
             <ModalComponent type="create" />
           </div>
           <div className={style.cards}>
-            <div className="row" style={{ width: "100%" }}>
-              {" "}
-              {todoList.map((data, i) => (
-                <div className="col-md-4" key={i}>
-                  <div className={style.card}>
-                    <div className={style.title}>{data.notes}</div>
-                    <div className={style.date}>{data.date}</div>
-                    <div className={style.edit}>
-                      <ModalComponent
-                        type="edit"
-                        content={data.notes}
-                        id={data.id}
-                      />
+            <div style={{ width: "100%" }}>
+              <div className="row" style={{ width: "100%" }}>
+                {todoList.map((data, i) => (
+                  <div className="col-md-4" key={i}>
+                    <div className={style.card}>
+                      <div className={style.title}>{data.notes}</div>
+                      <div className={style.date}>{data.date}</div>
+                      <div className={style.edit}>
+                        <ModalComponent
+                          type="edit"
+                          content={data.notes}
+                          id={data.id}
+                        />
+                      </div>
+                      <div className={style.star}></div>
                     </div>
-                    <div className={style.star}></div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>

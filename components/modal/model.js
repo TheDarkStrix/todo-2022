@@ -107,8 +107,10 @@ export default function ModalComponent(props) {
               type="textarea"
               name="text"
               id="exampleText"
-              onChange={handleOnChangeEvent}
-              value={notesValue}
+              onChange={
+                props.type == "create" ? handleOnChange : handleOnChangeEvent
+              }
+              value={props.type == "create" ? notes : notesValue}
             />
           </FormGroup>
         </ModalBody>

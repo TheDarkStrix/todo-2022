@@ -96,6 +96,12 @@
   justify-content: center;
 }
 
+.noNotes {
+  display: flex;
+  justify-content: center;
+  font-size: 1.5em;
+}
+
 @media screen and (max-width: 768px) {
   .sidebar_parent {
     display: none;
