@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import ModalComponent from "../modal/model";
 import firebase from "../../utils/firebase";
-import style from "./notes.module.css";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import LoadingSkeleton from "../loading-skeleton/loading-skeleton";
+import { Heading } from "../heading/heading";
+dayjs.extend(relativeTime);
 
 export default function Notes() {
   const [todoList, setTodoList] = useState([]);
+  const [loading, setLoading] = useState();
 
   let colors = [
     "#F44336",
@@ -20,9 +25,8 @@ export default function Notes() {
   function randomColor() {
     return colors[Math.floor(Math.random() * colors.length)];
   }
-  //console.log(todoList.length);
 
-  useEffect(() => {
+  const handleFetchPosts = () => {
     const todoRef = firebase.database().ref("Todo");
     todoRef.on("value", (snapshot) => {
       const todos = snapshot.val();
@@ -33,47 +37,65 @@ export default function Notes() {
       console.log(todoList);
       setTodoList(todoList);
     });
-    console.log(todoList);
+    return todoList.length;
+  };
+
+  useEffect(async () => {
+    setLoading(true);
+    handleFetchPosts();
+    setLoading(false);
   }, []);
   return (
     <>
-      <div className="row" style={{ maxWidth: "100%" }}>
-        <div className={["col-md-1", style.sidebar_parent].join(" ")}>
-          <div className={style.sidebar}>
-            <div className={style.heading}>TODO</div>
-            <div className={style.button_parent}>
-              <ModalComponent type="create" />
-            </div>
-          </div>
+      <div>
+        <div className="my-6">
+          <Heading />
         </div>
-        <div className="col">
-          <div className={style.button_parent_mobile}>
-            <ModalComponent type="create" />
-          </div>
-          <div className={style.cards}>
-            <div style={{ width: "100%" }}>
-              <div className="row" style={{ width: "100%" }}>
-                {todoList.map((data, i) => (
-                  <div className="col-md-4" key={i}>
+        <div>
+          <ModalComponent type="create" />
+        </div>
+      </div>
+      <div>
+        <div>
+          <ModalComponent type="create" />
+        </div>
+
+        <div class="container mx-auto">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+            {loading
+              ? [...Array(4).keys()].map((value) => (
+                  <LoadingSkeleton key={value} />
+                ))
+              : todoList.length > 0
+              ? todoList &&
+                todoList.length > 0 &&
+                todoList.map((data, i) => (
+                  <div key={data.id}>
                     <div
-                      className={style.card}
+                      className="drop-shadow-lg rounded-lg p-4 m-6 relative"
                       style={{ backgroundColor: randomColor() }}
                     >
-                      <div className={style.title}>{data.notes}</div>
-                      <div className={style.date}>{data.date}</div>
-                      <div className={style.edit}>
+                      <div className="whitespace-pre-wrap text-white font-bold break-all">
+                        {data.notes}
+                      </div>
+                      <div className="text-sm text-white font-light mt-9 w-1/2 truncate">
+                        {dayjs().to(dayjs(data.date))}
+                      </div>
+                      <div className="flex absolute right-3 bottom-3">
                         <ModalComponent
                           type="edit"
                           content={data.notes}
                           id={data.id}
                         />
                       </div>
-                      <div className={style.star}></div>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
+                ))
+              : !loading && (
+                  <div className="text-lg uppercase absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                    No posts yet !
+                  </div>
+                )}
           </div>
         </div>
       </div>
