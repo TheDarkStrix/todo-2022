@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const TodoList = ({
+export const TodoList = ({
   list,
   onRemoveItem,
   onEditItem,
