@@ -34,7 +34,7 @@ export default function Notes() {
       for (let id in todos) {
         todoList.push({ id, ...todos[id] });
       }
-      console.log(todoList);
+      console.log("list", todoList);
       setTodoList(todoList);
     });
     return todoList.length;
@@ -75,16 +75,24 @@ export default function Notes() {
                       className="drop-shadow-lg rounded-lg p-4 m-6 relative"
                       style={{ backgroundColor: randomColor() }}
                     >
-                      <div className="whitespace-pre-wrap text-white font-bold break-all">
-                        {data.notes}
+                      <div className="truncate text-white overflow-hidden">
+                        {data.title}
                       </div>
+                      <ol className="list-decimal list-inside">
+                        {data?.todos?.map((todo) => (
+                          <li className={todo.isDone ? "line-through" : ""}>
+                            {todo.name}
+                          </li>
+                        ))}
+                      </ol>
                       <div className="text-sm text-white font-light mt-9 w-1/2 truncate">
                         {dayjs().to(dayjs(data.date))}
                       </div>
                       <div className="flex absolute right-3 bottom-3">
                         <ModalComponent
                           type="edit"
-                          content={data.notes}
+                          content={data}
+                          cardIndex={i}
                           id={data.id}
                         />
                       </div>
