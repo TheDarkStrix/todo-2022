@@ -30,12 +30,22 @@ export default function Notes() {
     const todoRef = firebase.database().ref("Todo");
     todoRef.on("value", (snapshot) => {
       const todos = snapshot.val();
-      const todoList = [];
-      for (let id in todos) {
-        todoList.push({ id, ...todos[id] });
+      console.log("todos", todos);
+      if (todos) {
+        const todoList = [];
+        const keyMap = Object.keys(todos) || [];
+        console.log(keyMap);
+        Object.values(todos).forEach((id, i) => {
+          todoList.push({ ...id, parentId: keyMap[i] });
+        });
+        // for (let id in todos) {
+        //   todoList.push({ id, ...todos[id], parentId: keyMap[id] });
+        // }
+        console.log("list", todoList);
+        setTodoList(todoList);
+      } else {
+        setTodoList([]);
       }
-      console.log("list", todoList);
-      setTodoList(todoList);
     });
     return todoList.length;
   };
@@ -94,6 +104,8 @@ export default function Notes() {
                           content={data}
                           cardIndex={i}
                           id={data.id}
+                          parentId={data.parentId}
+                          fetchPosts={handleFetchPosts}
                         />
                       </div>
                     </div>

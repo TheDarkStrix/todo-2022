@@ -31,9 +31,9 @@ export default function ModalComponent(props) {
   };
 
   const deleteNote = async () => {
-    const todoRef = firebase.database().ref("Todo").child(props.id);
+    const todoRef = firebase.database().ref("Todo/" + props.parentId);
     await todoRef.remove();
-    toggle();
+    // toggle();
   };
 
   const onEditTodoItem = ({ text, listIndex }) => {
@@ -77,7 +77,11 @@ export default function ModalComponent(props) {
       };
       await todoRef.push(note);
     } else if (type === "edit") {
-      const todoRef = firebase.database().ref("Todo").child(props.id);
+      console.log("EDIT MODE");
+      console.log(props.id);
+
+      const todoRef = firebase.database().ref("Todo/" + props.parentId);
+      console.log("parentID", props.parentId);
       await todoRef.update({
         title: cardTitle,
         id: props.id,
@@ -107,7 +111,7 @@ export default function ModalComponent(props) {
       ) : (
         <div className="flex">
           <button
-            onClick={toggle}
+            onClick={() => toggle()}
             className="bg-black hover:bg-gray-900 text-white text-center rounded-full justify-center p-2 flex items-center bottom-4 right-4 w-8 h-8 mr-2"
           >
             <svg
@@ -127,7 +131,7 @@ export default function ModalComponent(props) {
           </button>
 
           <button
-            onClick={deleteNote}
+            onClick={() => deleteNote()}
             className="bg-black hover:bg-gray-900 text-white text-center rounded-full justify-center p-2 flex items-center bottom-4 right-4 w-8 h-8"
           >
             <svg
