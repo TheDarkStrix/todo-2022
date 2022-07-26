@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import firebase from "../../utils/firebase";
 import { Dialog, Transition } from "@headlessui/react";
 import dayjs from "dayjs";
-import TodoList from "../todoList/todoList";
+import TodoList from "../todoList/TodoList";
 
 export default function ModalComponent(props) {
   const [modal, setModal] = useState(false);
